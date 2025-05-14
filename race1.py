@@ -51,11 +51,11 @@ class Player:
         position_stacks[new_pos].extend(moving_group)
         for p in moving_group:
             p.position = new_pos
-            if new_pos >= 20:
+            if new_pos >= 24:
                 p.reached = True
         
         # 检查是否到达终点
-        if new_pos >= 20:
+        if new_pos >= 24:
             return position_stacks[new_pos][-1]
         return None
 
@@ -200,7 +200,7 @@ players = [
 ]
 
 # 模拟参数
-simulations = 10000
+simulations = 10000 # 模拟次数
 results = {p.name: 0 for p in players}
 
 # 运行模拟
