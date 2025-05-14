@@ -45,7 +45,7 @@ class Player:
             stack.pop(index)
         
         # 计算新位置
-        new_pos = min(current_pos + steps, 20)
+        new_pos = min(current_pos + steps, 24)
         
         # 添加到新位置
         position_stacks[new_pos].extend(moving_group)
@@ -74,16 +74,13 @@ class KeLaiTa(Player):
             return None
         
         if random.random() < 0.28:
+            dice = self.roll_dice()  # 只投掷一次骰子
             for _ in range(2):
-                dice = self.roll_dice()
                 winner = self.move(dice, position_stacks)
                 if winner:
                     return winner
                 if self.reached:
                     break
-                # 今汐技能检查
-                if isinstance(self, JinXi):
-                    self.after_move(position_stacks)
             return None
         else:
             return super().take_turn(position_stacks, players)
@@ -117,7 +114,10 @@ class KaKaLuo(Player):
         if not active_players:
             return None
         min_pos = min(p.position for p in active_players)
-        extra = 3 if self.position == min_pos else 0
+        if self.position == min_pos and position_stacks[min_pos][0] == self:
+            extra = 3
+        else:
+            extra = 0
         
         dice = self.roll_dice()
         steps = dice + extra
@@ -157,7 +157,7 @@ def simulate_game(players):
     while True:
         # 检查是否有人到达终点
         for pos in list(position_stacks.keys()):
-            if pos >= 20 and position_stacks[pos]:
+            if pos >= 24 and position_stacks[pos]:
                 return position_stacks[pos][-1].name
         
         # 获取存活玩家
@@ -184,7 +184,7 @@ def simulate_game(players):
             
             # 再次检查终点
             for pos in list(position_stacks.keys()):
-                if pos >= 20 and position_stacks[pos]:
+                if pos >= 24 and position_stacks[pos]:
                     return position_stacks[pos][-1].name
     
     return None
