@@ -219,7 +219,7 @@ players = [
 ]
 
 # 模拟参数
-simulations = 10000
+simulations = 100000 # 模拟次数
 results = {p.name: 0 for p in players}
 
 # 运行模拟
